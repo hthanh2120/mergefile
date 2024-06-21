@@ -1,3 +1,4 @@
+import csv
 import os
 import pandas as pd
 import unicodedata
@@ -21,12 +22,9 @@ for csv_file in file_paths:
 
     # Check file type and read accordingly
     if csv_file.lower().endswith('.csv'):
-        df = pd.read_csv(file_path, dtype=str, encoding='utf-8')
+        df = pd.read_csv(file_path, dtype={'TRANSACTION ID': str}, encoding='utf-8')
     elif csv_file.lower().endswith('.xlsx'):
-        df = pd.read_excel(file_path, dtype=str)
-
-    if 'TRANSACTION ID' in df.columns:
-        df['TRANSACTION ID'] = df['TRANSACTION ID'].astype(str)
+        df = pd.read_excel(file_path, dtype={'TRANSACTION ID': str})
 
     # Check if the DataFrame is not empty
     if not df.empty:
@@ -112,7 +110,7 @@ merged_df = pd.concat(dfs, ignore_index=True)
 merged_df = merged_df[['File_Name'] + [col for col in merged_df.columns if col != 'File_Name']]
 
 # Save the merged DataFrame to a new CSV file with proper encoding
-output_file = "merged_file.csv"
-merged_df.to_csv(output_file, index=False, encoding='utf-8')
+output_file = "merged_file.xlsx"
+merged_df.to_excel(output_file, index=False)
 
 print("Merging complete. Merged data saved to:", output_file)
