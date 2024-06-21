@@ -21,9 +21,12 @@ for csv_file in file_paths:
 
     # Check file type and read accordingly
     if csv_file.lower().endswith('.csv'):
-        df = pd.read_csv(file_path, dtype={'TRANSACTION ID': str}, encoding='utf-8')
+        df = pd.read_csv(file_path, dtype=str, encoding='utf-8')
     elif csv_file.lower().endswith('.xlsx'):
-        df = pd.read_excel(file_path, dtype={'TRANSACTION ID': str})
+        df = pd.read_excel(file_path, dtype=str)
+
+    if 'TRANSACTION ID' in df.columns:
+        df['TRANSACTION ID'] = df['TRANSACTION ID'].astype(str)
 
     # Check if the DataFrame is not empty
     if not df.empty:
